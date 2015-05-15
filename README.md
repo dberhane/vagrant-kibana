@@ -1,4 +1,4 @@
-# BMJ Drupal site 
+# Vagrant box for ELK stack
 
 ## Description
 
