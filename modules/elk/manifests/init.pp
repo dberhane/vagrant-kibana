@@ -32,11 +32,36 @@ class elk {
     require => [Exec['install-elasticsearch'], File['/etc/elasticsearch/elasticsearch.yml']],
   }
 
+  exec { "install kopf":
+    cwd => "/home/vagrant",
+    command => "sudo /usr/share/elasticsearch/bin/plugin -install lmenezes/elasticsearch-kopf",
+    require => Exec['install-elasticsearch']
+  }
 
   exec { "download-kibana4":
-    cwd => "/home/vagrant",
-    command => "wget https://download.elasticsearch.org/kibana/kibana/kibana-4.0.1-linux-x64.tar.gz",
-    creates => "/home/vagrant/kibana-4.0.1-linux-x64.tar.gz",
+    cwd => "/opt/sites/kibana",
+    command => "wget https://download.elasticsearch.org/kibana/kibana/kibana-4.0.2-linux-x64.tar.gz",
+    creates => "/opt/sites/kibana/kibana-4.0.2-linux-x64.tar.gz",
+  }
+
+  exec { "install-kibana4":
+    # unless => 'service logstash status',
+    cwd => "/opt/sites/kibana",
+    command => "tar xvfz kibana-4.0.2-linux-x64.tar.gz && mv /opt/sites/kibana/kibana*64/* /opt/sites/kibana",
+    require => Exec["download-kibana4"],
+  }
+
+  exec { "download-logstash":
+    cwd => "/var/cache/apt/archives",
+    command => "wget http://download.elastic.co/logstash/logstash/packages/debian/logstash_1.5.0-rc3-1_all.deb",
+    creates => "/var/cache/apt/archives/logstash_1.5.0-rc3-1_all.deb",
+  }
+
+  exec { "install-logstash":
+    unless => 'service logstash status',
+    cwd => "/var/cache/apt/archives",
+    command => "dpkg -i logstash_1.5.0-rc3-1_all.deb && update-rc.d logstash defaults 95 10 && /etc/init.d/logstash restart",
+    require => Exec["download-logstash"]
   }
 
 }
