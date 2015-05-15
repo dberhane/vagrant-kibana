@@ -2,18 +2,18 @@
 
 ## Description
 
-Vagrant and Puppet provisioner script which deploys a Drupal local development environment based on an Ubuntu VM
+Vagrant and Puppet provisioner script ELK stack: ElasticSearch, LogStash and Kibana 4
 
 ## Requirements
 
 ### Platform:
-Tested on Ubuntu 10.04
+Tested on Trusty, Ubuntu 14.04
 
 ### Installation 
 
 (The Puppet script was tested on Virtualbox 4.3.18 and Vagrant 1.6.5)
 
-- Install Virtualbox 4.3.18 
+- Install Virtualbox 4.3.20 
 
 - Install Vagrant 1.6.5 
 
@@ -29,10 +29,5 @@ Download or clone this git repo and change to the directory and run
 
 - Run vagrant up
 
-=======
-drupal-sites
-=========
-
-Puppet script for The BMJ local Drupal development environment
 
 Author:: Daniel Berhane (<dberhane@gmail.com>)
