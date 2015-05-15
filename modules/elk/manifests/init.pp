@@ -1,7 +1,14 @@
 class elk {
 
+  file { ["/opt/sites", "/opt/sites/kibana", "/opt/sites/test"]:
+    ensure  => "directory",
+    owner   => "vagrant",
+    group   => "vagrant",
+    mode    => 755,
+    recurse => true,
+  }
+
   exec { "install-java8":
-    unless => 'java -version',
     command => "add-apt-repository -y ppa:webupd8team/java && sudo apt-get update && echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections && echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections && sudo apt-get -y install oracle-java8-installer",
     require => Class["bootstrap"]
   }
@@ -28,7 +35,7 @@ class elk {
 
   exec { "download-kibana4":
     cwd => "/home/vagrant",
-    command => "https://download.elasticsearch.org/kibana/kibana/kibana-4.0.1-linux-x64.tar.gz",
+    command => "wget https://download.elasticsearch.org/kibana/kibana/kibana-4.0.1-linux-x64.tar.gz",
     creates => "/home/vagrant/kibana-4.0.1-linux-x64.tar.gz",
   }
 
